@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mounika Punna — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1615;
+    --panel:#11201D;
+    --panel-2:#16281F;
+    --line: rgba(232,237,233,0.10);
+    --text:#E8EDE9;
+    --muted:#93A9A2;
+    --amber:#F2A65A;
+    --mint:#7FD8B8;
+    --mono: 'IBM Plex Mono', monospace;
+    --display: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; text-decoration:none; }
+  ::selection{ background:var(--amber); color:var(--ink); }
+
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 32px; }
+
+  /* NAV */
+  header.nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    backdrop-filter:blur(10px);
+    background:rgba(11,22,21,0.72);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{ max-width:1080px; margin:0 auto; padding:18px 32px;
+    display:flex; align-items:center; justify-content:space-between; }
+  .logo{ font-family:var(--display); font-weight:700; font-size:18px; letter-spacing:0.02em; }
+  .logo span{ color:var(--amber); }
+  nav.links{ display:flex; gap:28px; font-size:14px; color:var(--muted); }
+  nav.links a{ transition:color .2s ease; }
+  nav.links a:hover{ color:var(--amber); }
+
+  /* HERO */
+  .hero{
+    min-height:100svh;
+    display:flex; align-items:center;
+    padding-top:90px; padding-bottom:60px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center; width:100%;
+  }
+  .eyebrow{
+    font-family:var(--mono); font-size:13px; color:var(--mint);
+    letter-spacing:0.08em; text-transform:uppercase; margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{ content:''; width:22px; height:1px; background:var(--mint); display:inline-block; }
+  h1.title{
+    font-family:var(--display); font-weight:700;
+    font-size:clamp(40px,6vw,64px); line-height:1.05; letter-spacing:-0.01em;
+    margin-bottom:20px;
+  }
+  h1.title .accent{ color:var(--mint); }
+  .lede{ color:var(--muted); font-size:17px; max-width:52ch; margin-bottom:32px; }
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:30px; }
+  .btn{
+    font-family:var(--body); font-weight:600; font-size:14px;
+    padding:12px 22px; border-radius:8px; display:inline-flex; align-items:center; gap:8px;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{ background:var(--amber); color:var(--ink); }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(242,166,90,0.25); }
+  .btn-ghost{ border:1px solid var(--line); color:var(--text); }
+  .btn-ghost:hover{ border-color:var(--mint); color:var(--mint); }
+  .social-row{ display:flex; gap:18px; font-family:var(--mono); font-size:13px; color:var(--muted); flex-wrap:wrap; }
+  .social-row a{ border-bottom:1px solid transparent; transition:border-color .2s, color .2s; }
+  .social-row a:hover{ color:var(--mint); border-color:var(--mint); }
+
+  /* Graph visual */
+  .graph-box{ position:relative; aspect-ratio:1/1; max-width:440px; margin:0 auto; }
+  .graph-box svg{ width:100%; height:100%; overflow:visible; }
+  .edge{ stroke:rgba(232,237,233,0.18); stroke-width:1.5; fill:none; }
+  .path-edge{
+    stroke:var(--amber); stroke-width:2.5; fill:none;
+    stroke-dasharray:14 6;
+    animation: flow 1.6s linear infinite;
+  }
+  .node{ fill:var(--panel-2); stroke:rgba(232,237,233,0.35); stroke-width:1.5; }
+  .node.on{ fill:var(--amber); stroke:var(--amber); }
+  .node.start{ fill:var(--mint); stroke:var(--mint); }
+  .node-label{ font-family:var(--mono); font-size:10px; fill:var(--muted); }
+  @keyframes flow{ to{ stroke-dashoffset:-40; } }
+  @media (prefers-reduced-motion: reduce){ .path-edge{ animation:none; } }
+
+  section{ padding:90px 0; }
+  .section-head{ margin-bottom:48px; }
+  .kicker{
+    font-family:var(--mono); font-size:12px; color:var(--amber);
+    letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px;
+  }
+  h2.section-title{
+    font-family:var(--display); font-size:clamp(26px,4vw,36px); font-weight:600;
+  }
+
+  /* ABOUT */
+  .about-text{ color:var(--muted); font-size:16px; max-width:70ch; }
+
+  /* SKILLS */
+  .skills-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .skill-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:26px;
+  }
+  .skill-card h3{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--mint); margin-bottom:14px;
+  }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:var(--mono); font-size:12.5px; padding:6px 12px; border-radius:6px;
+    background:var(--panel-2); color:var(--text); border:1px solid var(--line);
+  }
+
+  /* PROJECTS */
+  .project-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px;
+    padding:32px; display:grid; grid-template-columns:1fr 220px; gap:28px; align-items:center;
+    margin-bottom:24px;
+  }
+  .project-card .visual{ display:flex; align-items:center; justify-content:center; }
+  .project-tag{ font-family:var(--mono); font-size:12px; color:var(--muted); margin-bottom:8px; }
+  .project-card h3{ font-family:var(--display); font-size:22px; font-weight:600; margin-bottom:10px; }
+  .project-card ul{ color:var(--muted); font-size:14.5px; padding-left:18px; display:flex; flex-direction:column; gap:6px; }
+  .project-card ul li::marker{ color:var(--amber); }
+  .stack-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+
+  /* EDUCATION timeline */
+  .timeline{ position:relative; padding-left:28px; }
+  .timeline::before{ content:''; position:absolute; left:5px; top:6px; bottom:6px; width:1.5px; background:var(--line); }
+  .tl-item{ position:relative; padding-bottom:34px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:''; position:absolute; left:-28px; top:4px; width:11px; height:11px; border-radius:50%;
+    background:var(--ink); border:2px solid var(--amber);
+  }
+  .tl-date{ font-family:var(--mono); font-size:12px; color:var(--amber); margin-bottom:4px; }
+  .tl-item h4{ font-family:var(--display); font-size:18px; font-weight:600; margin-bottom:4px; }
+  .tl-item p{ color:var(--muted); font-size:14.5px; }
+
+  /* CERTS */
+  .certs-list{ display:flex; flex-direction:column; }
+  .cert-row{
+    display:flex; align-items:baseline; gap:16px; padding:16px 0; border-bottom:1px solid var(--line);
+    font-size:15px;
+  }
+  .cert-row:first-child{ border-top:1px solid var(--line); }
+  .cert-row .num{ font-family:var(--mono); color:var(--muted); font-size:13px; min-width:24px; }
+  .cert-row a{ border-bottom:1px dotted var(--mint); color:var(--mint); }
+
+  /* FOOTER */
+  footer{ padding:70px 0 50px; border-top:1px solid var(--line); }
+  .footer-inner{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:30px; }
+  footer h2{ font-family:var(--display); font-size:clamp(28px,4vw,40px); margin-bottom:14px; }
+  .footer-links{ display:flex; gap:22px; flex-wrap:wrap; font-family:var(--mono); font-size:13px; color:var(--muted); }
+  .footer-links a:hover{ color:var(--amber); }
+  .copyright{ color:var(--muted); font-size:12.5px; margin-top:40px; font-family:var(--mono); }
+
+  @media (max-width:820px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .graph-box{ order:-1; max-width:280px; }
+    .skills-grid{ grid-template-columns:1fr; }
+    .project-card{ grid-template-columns:1fr; }
+    .project-card .visual{ order:-1; }
+    nav.links{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="logo">M<span>.</span>Punna</div>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">B.Tech CSE · BVRIT Hyderabad · 2028</div>
+      <h1 class="title">Turning patient data<br>into <span class="accent">clearer decisions.</span></h1>
+      <p class="lede">I'm Mounika Punna, a third-year Computer Science student who builds tools that make raw data easier to act on — starting with Mediscope, a health analysis dashboard for spotting at-risk patients faster.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/Mounika5y0/Mediscope_project" target="_blank">View Mediscope on GitHub</a>
+        <a class="btn btn-ghost" href="#contact">Get in Touch</a>
+      </div>
+      <div class="social-row">
+        <a href="https://github.com/Mounika5y0" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/mounika-punna-94aa18355" target="_blank">LinkedIn</a>
+        <a href="https://leetcode.com/u/Mounka/" target="_blank">LeetCode</a>
+        <a href="https://www.codechef.com/users/mounika_5y0/" target="_blank">CodeChef</a>
+      </div>
+    </div>
+
+    <div class="graph-box" aria-hidden="true">
+      <svg viewBox="0 0 300 300">
+        <rect x="6" y="6" width="288" height="288" rx="16" fill="var(--panel-2)" stroke="var(--line)"/>
+        <text x="28" y="42" class="node-label" style="font-size:12px; letter-spacing:0.08em;">MEDISCOPE — PATIENT RISK</text>
+        <line x1="28" y1="54" x2="272" y2="54" stroke="var(--line)"/>
+
+        <!-- BMI distribution bars -->
+        <rect x="28" y="150" width="20" height="70" rx="3" fill="var(--mint)" opacity="0.55"/>
+        <rect x="58" y="120" width="20" height="100" rx="3" fill="var(--mint)" opacity="0.75"/>
+        <rect x="88" y="90"  width="20" height="130" rx="3" fill="var(--amber)"/>
+        <rect x="118" y="130" width="20" height="90" rx="3" fill="var(--mint)" opacity="0.65"/>
+        <rect x="148" y="105" width="20" height="115" rx="3" fill="var(--mint)" opacity="0.85"/>
+        <line x1="24" y1="222" x2="176" y2="222" stroke="var(--line)"/>
+        <text x="28" y="238" class="node-label">BMI distribution</text>
+
+        <!-- risk score dial -->
+        <circle cx="228" cy="130" r="42" fill="none" stroke="var(--line)" stroke-width="8"/>
+        <circle cx="228" cy="130" r="42" fill="none" stroke="var(--amber)" stroke-width="8"
+                stroke-dasharray="185 264" stroke-linecap="round" transform="rotate(-90 228 130)"/>
+        <text x="228" y="126" text-anchor="middle" class="node-label" style="font-size:16px; fill:var(--text);">70%</text>
+        <text x="228" y="142" text-anchor="middle" class="node-label" style="font-size:9px;">risk score</text>
+        <text x="228" y="188" text-anchor="middle" class="node-label">risk scoring</text>
+
+        <!-- animated health trend line -->
+        <polyline class="path-edge" points="24,260 55,260 68,238 82,272 96,246 112,260 300,260" fill="none"/>
+        <text x="28" y="278" class="node-label">health trend, live</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Summary</div>
+      <h2 class="section-title">Curious, hands-on, still learning every day</h2>
+    </div>
+    <p class="about-text">Dedicated and curious third-year B.Tech Computer Science student with a strong desire to grow in technology. I enjoy building projects that solve real problems, and I believe in working hard, staying open-minded, and taking initiative to achieve meaningful results. I'm looking to join a team where I can apply my skills, make a valuable impact, and keep learning.</p>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Toolkit</div>
+      <h2 class="section-title">Technical Skills</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h3>Languages</h3>
+        <div class="chip-row">
+          <span class="chip">Java</span>
+          <span class="chip">HTML</span>
+          <span class="chip">CSS</span>
+          <span class="chip">JavaScript</span>
+          <span class="chip">Node.js</span>
+          <span class="chip">C</span>
+          <span class="chip">Python (basics)</span>
+          <span class="chip">Data Structures</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Databases</h3>
+        <div class="chip-row">
+          <span class="chip">SQL basics</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Dev Tools</h3>
+        <div class="chip-row">
+          <span class="chip">VS Code</span>
+          <span class="chip">Eclipse</span>
+          <span class="chip">IDLE Shell</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Selected Work</div>
+      <h2 class="section-title">Projects</h2>
+    </div>
+
+    <div class="project-card" style="border-color:rgba(127,216,184,0.35);">
+      <div>
+        <div class="project-tag" style="color:var(--mint);">★ Featured · 2025</div>
+        <h3>Mediscope — Web-Based Health Analysis Dashboard</h3>
+        <ul>
+          <li>Developed a web-based health analysis dashboard that processes real-world patient data to visualize health trends and identify at-risk groups.</li>
+          <li>Built interactive dashboards using Chart.js to display BMI distribution, health metrics, and patient risk analysis.</li>
+          <li>Implemented a rule-based health risk scoring system to support faster, data-driven healthcare decisions.</li>
+          <li>Integrated a Kaggle healthcare dataset for analysis and visualization of patient health records.</li>
+        </ul>
+        <div class="stack-row">
+          <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span>
+          <span class="chip">Node.js</span><span class="chip">Chart.js</span><span class="chip">Kaggle Dataset</span>
+        </div>
+        <div style="margin-top:18px;">
+          <a class="btn btn-primary" href="https://github.com/Mounika5y0/Mediscope_project" target="_blank">View on GitHub →</a>
+        </div>
+      </div>
+      <div class="visual">
+        <svg width="180" height="140" viewBox="0 0 180 140">
+          <rect x="0" y="0" width="180" height="140" rx="10" fill="var(--panel-2)" stroke="var(--line)"/>
+          <rect x="20" y="80" width="16" height="40" rx="2" fill="var(--mint)"/>
+          <rect x="46" y="55" width="16" height="65" rx="2" fill="var(--mint)" opacity="0.85"/>
+          <rect x="72" y="30" width="16" height="90" rx="2" fill="var(--amber)"/>
+          <rect x="98" y="65" width="16" height="55" rx="2" fill="var(--mint)" opacity="0.7"/>
+          <rect x="124" y="45" width="16" height="75" rx="2" fill="var(--mint)" opacity="0.85"/>
+          <line x1="15" y1="120" x2="150" y2="120" stroke="var(--line)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div>
+        <div class="project-tag">Personal Project</div>
+        <h3>Fire Engine Road Map</h3>
+        <ul>
+          <li>Designed and developed a shortest-path navigation system for fire engines using Dijkstra's Algorithm.</li>
+          <li>Computed the fastest emergency routes to reduce travel time and improve response efficiency.</li>
+        </ul>
+        <div class="stack-row">
+          <span class="chip">Python</span><span class="chip">Dijkstra's Algorithm</span>
+        </div>
+      </div>
+      <div class="visual">
+        <svg width="180" height="140" viewBox="0 0 180 140">
+          <rect x="0" y="0" width="180" height="140" rx="10" fill="var(--panel-2)" stroke="var(--line)"/>
+          <line class="edge" x1="30" y1="100" x2="80" y2="40"/>
+          <line class="edge" x1="80" y1="40" x2="140" y2="55"/>
+          <line class="edge" x1="30" y1="100" x2="90" y2="110"/>
+          <line class="edge" x1="90" y1="110" x2="140" y2="55"/>
+          <polyline class="path-edge" points="30,100 80,40 140,55"/>
+          <circle class="node start" cx="30" cy="100" r="6"/>
+          <circle class="node" cx="80" cy="40" r="6"/>
+          <circle class="node on" cx="140" cy="55" r="6"/>
+          <circle class="node" cx="90" cy="110" r="6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Background</div>
+      <h2 class="section-title">Education</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">Aug 2024 — May 2028</div>
+        <h4>BVRIT Hyderabad College of Engineering for Women</h4>
+        <p>Bachelor of Science in Computer Science · Nizampet Road, Telangana · CGPA 8.84</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2022 — 2024</div>
+        <h4>SR Junior College</h4>
+        <p>Intermediate — MPC · Peddamberpet, Telangana · Marks: 979</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">March 2022</div>
+        <h4>Krishnaveni Talent School</h4>
+        <p>SSC · Haliya, Telangana · CGPA 9.8</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certifications">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Continued Learning</div>
+      <h2 class="section-title">Certifications</h2>
+    </div>
+    <div class="certs-list">
+      <div class="cert-row"><span class="num">01</span><span>Python Fundamentals — Infosys Springboard</span></div>
+      <div class="cert-row"><span class="num">02</span><span>C Language — Infosys Springboard</span></div>
+      <div class="cert-row"><span class="num">03</span><span>AI Fluency: Generative AI — Microsoft Learn (March 2026)</span></div>
+      <div class="cert-row"><span class="num">04</span><span>CMI FLY Sessions — Foundation for Excellence</span></div>
+      <div class="cert-row"><span class="num">05</span><span>Virtual Internship Program — ServiceNow University</span></div>
+      <div class="cert-row"><span class="num">06</span><span>Python 101 for Data Science — <a href="https://doi.org/10.1109/TASC.2023.3340648" target="_blank">IBM Developer Skills Network, issued by Cognitive Class</a></span></div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <h2>Let's build<br>something together.</h2>
+        <p style="color:var(--muted); max-width:40ch;">Open to internships and entry-level roles where I can learn fast and contribute early.</p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:punnamounika03@gmail.com">punnamounika03@gmail.com</a>
+        <a href="tel:+919985721985">+91 998 572 1985</a>
+        <a href="https://github.com/Mounika5y0" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/mounika-punna-94aa18355" target="_blank">LinkedIn</a>
+        <a href="https://leetcode.com/u/Mounka/" target="_blank">LeetCode</a>
+        <a href="https://www.codechef.com/users/mounika_5y0/" target="_blank">CodeChef</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 Mounika Punna · Hyderabad, Telangana</div>
+  </div>
+</footer>
+
+</body>
+</html>
